@@ -9,7 +9,7 @@ class AlkotekaSpider(scrapy.Spider):
     allowed_domains = ['alkoteka.com']
 
     KRASNODAR_CITY_UUID = '4a70f9e0-46ae-11e7-83ff-00155d026416'
-    per_page = 4  # 2000 оптимально
+    per_page = 2000  # 2000 оптимально, минимум 4 (для тестов и тд)
 
     def get_api_category_url(self, slug):
         return f"https://alkoteka.com/web-api/v1/product?city_uuid={self.KRASNODAR_CITY_UUID}&page=1&per_page={self.per_page}&root_category_slug={slug}"
@@ -53,7 +53,6 @@ class AlkotekaSpider(scrapy.Spider):
 
         for url in start_urls:
             slug = url.split('/')[-1]
-            print(slug)
             api_category_url = self.get_api_category_url(slug)
 
             yield scrapy.Request(api_category_url, callback=self.get_items_from_category)
@@ -73,7 +72,6 @@ class AlkotekaSpider(scrapy.Spider):
             return
 
         for product_data in products_data:
-            # product_page_url = product_data.get('product_url')
             product_slug = product_data.get('slug')
             product_page_url = self.get_additional_info_url(product_slug)
 
