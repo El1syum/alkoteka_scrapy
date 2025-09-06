@@ -81,13 +81,13 @@ class AlkotekaSpider(scrapy.Spider):
 
             yield scrapy.Request(
                 url=product_page_url,
-                callback=self.parse_item_first,
+                callback=self.parse_item,
                 meta={
                     'api_data': product_data
                 }
             )
 
-    def parse_item_first(self, response):
+    def parse_item(self, response):
         """
         Парсинг json товара и извлечение всей необходимой информации.
         """
